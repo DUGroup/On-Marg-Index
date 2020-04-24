@@ -46,23 +46,23 @@ ggplot() +
 ##First make sure both objects are using the same CRS
 SJtest <- st_join(Geocode.reprojected, left = FALSE, OnMarg.reprojected)
 
-#School Summaries
+#Point Summaries - attached ONMarg Values to points based on the DA's they are located in
 
-SchoolSummary <- SJtest %>%
-  group_by(Schoolname, SchoolCode) %>%
+PointSummary <- SJtest %>%
+  group_by(Pointname, PointCode) %>%
   summarize(OnMargIndex = mean(as.numeric(Summary)))
 
 #check to see what the spatially joined data looks like
-SchoolSummary
+PointSummary
 
 #check to see what the spatially joined object looks like plotted
-#note that although there are only school records, every individual
+#note that although there are only Point records, every individual
 #student point appears to be retained in the geometry
 ggplot() +
-  geom_sf(data=SchoolSummary) +
-  ggtitle("School Summary and OnMarg Data") +
+  geom_sf(data=PointSummary) +
+  ggtitle("Point Summary and OnMarg Data") +
   coord_sf()
 
 #Convert the spatially joined shape object to a dataframe
-SchoolSummary.df <- st_drop_geometry(SchoolSummary)
+PointSummary.df <- st_drop_geometry(PointSummary)
 
