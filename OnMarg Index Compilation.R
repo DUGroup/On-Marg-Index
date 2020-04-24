@@ -6,12 +6,18 @@
 #The following code requires a DA shape file (you can use the one created above)
 #and a geocoded point shape file  
 
+#A note about the point file:
+#In each of the following contexts, the point file could represent:
+# Health: Each record is a patient (point) which can be grouped by hospital
+# Municipality: Each record is a resident (point) which can be grouped by services used
+# Education: Each record is a student (point) which can be grouped by school
+# Retail: Each record is a customer (point) which can be grouped by product purchased
+
 library(sf)
 
 #file locations
 Shapefile <- "C:/GIS/OnMarg - 1920 Geo/DDSB_DA_ONMarg16_UTMNAD81Z17N.shp"
 Pointfile <- "C:/GIS/Points.shp"
-
 
 #loading shape data  (here I have used my own)
 OnMarg <- st_read(Shapefile, stringsAsFactors = FALSE)
@@ -47,22 +53,29 @@ ggplot() +
 SJtest <- st_join(Geocode.reprojected, left = FALSE, OnMarg.reprojected)
 
 #Point Summaries - attached ONMarg Values to points based on the DA's they are located in
+#in the following code:
+#"Groupname" is the field in your geocode file that each record belongs to
+#"GroupCode" is also a field in your geocode file that each record belongs to
+#In my example I had a text label (Groupname) and a numeric label (GroupCode)
+#that each record belonged to.
+#Change the variables listed in the group_by() to the fields in your dataframe
+#that identifies the group each record belongs to.
 
-PointSummary <- SJtest %>%
-  group_by(Pointname, PointCode) %>%
+GroupSummary <- SJtest %>%
+  group_by(Groupname, GroupCode) %>%
   summarize(OnMargIndex = mean(as.numeric(Summary)))
 
 #check to see what the spatially joined data looks like
-PointSummary
+GroupSummary
 
 #check to see what the spatially joined object looks like plotted
 #note that although there are only Point records, every individual
-#student point appears to be retained in the geometry
+#point (record) appears to be retained in the geometry
 ggplot() +
-  geom_sf(data=PointSummary) +
-  ggtitle("Point Summary and OnMarg Data") +
+  geom_sf(data=GroupSummary) +
+  ggtitle("Group Summary and OnMarg Data") +
   coord_sf()
-
+ 
 #Convert the spatially joined shape object to a dataframe
-PointSummary.df <- st_drop_geometry(PointSummary)
+PointSummary.df <- st_drop_geometry(GroupSummary)
 
