@@ -16,6 +16,7 @@
 library(sf)
 library(ggplot2)
 library(dplyr)
+library(data.table)
 
 #file locations
 Shapefile <- "C:/GIS/OnMarg - 1920 Geo/DDSB_DA_ONMarg16_UTMNAD81Z17N.shp"
