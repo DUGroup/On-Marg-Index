@@ -14,6 +14,8 @@
 # Retail: Each record is a customer (point) which can be grouped by product purchased
 
 library(sf)
+library(ggplot2)
+library(dplyr)
 
 #file locations
 Shapefile <- "C:/GIS/OnMarg - 1920 Geo/DDSB_DA_ONMarg16_UTMNAD81Z17N.shp"

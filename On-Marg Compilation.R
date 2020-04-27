@@ -6,6 +6,7 @@ library(httr)       #Access and download the online file
 library(XLConnect)  #Load data from the downloaded excel file
 library(sf)         #Managing ESRI Shape files and geometry
 library(viridis)    #Color pallette
+library(ggplot2)    #Plotting shape file
 
 ##########Download the OnMarg datafile - working with Worksheet 4 with DA data
 GET("https://www.publichealthontario.ca/-/media/data-files/index-on-marg.xls?la=en", 
